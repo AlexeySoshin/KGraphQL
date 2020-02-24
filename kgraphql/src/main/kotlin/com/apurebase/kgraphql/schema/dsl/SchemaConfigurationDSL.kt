@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 
-class SchemaConfigurationDSL {
+open class SchemaConfigurationDSL {
     var useDefaultPrettyPrinter: Boolean = false
     var useCachingDocumentParser: Boolean = true
     var objectMapper: ObjectMapper = jacksonObjectMapper()

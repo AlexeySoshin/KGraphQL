@@ -1,5 +1,6 @@
 package com.apurebase.kgraphql.schema.dsl
 
+import com.apurebase.kgraphql.configuration.SchemaConfiguration
 import com.apurebase.kgraphql.schema.Publisher
 import com.apurebase.kgraphql.schema.Schema
 import com.apurebase.kgraphql.schema.SchemaException
@@ -21,11 +22,10 @@ import kotlin.reflect.KClass
 /**
  * SchemaBuilder exposes rich DSL to setup GraphQL schema
  */
-class SchemaBuilder internal constructor() {
-
+class SchemaBuilder internal constructor(
+    private val configuration: SchemaConfigurationDSL = DefaultSchemaConfigurationDSL()
+) {
     private val model = MutableSchemaDefinition()
-
-    private var configuration = SchemaConfigurationDSL()
 
     fun build(): Schema {
         // TODO: [runBlocking] is a temp fix

@@ -1,38 +1,23 @@
 package com.apurebase.kgraphql.schema.structure
 
-import com.apurebase.kgraphql.Context
+import com.apurebase.kgraphql.*
 import com.apurebase.kgraphql.configuration.SchemaConfiguration
-import com.apurebase.kgraphql.defaultKQLTypeName
-import com.apurebase.kgraphql.getIterableElementType
-import com.apurebase.kgraphql.isIterable
 import com.apurebase.kgraphql.schema.DefaultSchema
 import com.apurebase.kgraphql.schema.SchemaException
 import com.apurebase.kgraphql.schema.directive.Directive
 import com.apurebase.kgraphql.schema.introspection.SchemaProxy
 import com.apurebase.kgraphql.schema.introspection.TypeKind
 import com.apurebase.kgraphql.schema.introspection.__Schema
-import com.apurebase.kgraphql.schema.model.BaseOperationDef
-import com.apurebase.kgraphql.schema.model.FunctionWrapper
-import com.apurebase.kgraphql.schema.model.InputValueDef
-import com.apurebase.kgraphql.schema.model.PropertyDef
-import com.apurebase.kgraphql.schema.model.QueryDef
-import com.apurebase.kgraphql.schema.model.SchemaDefinition
-import com.apurebase.kgraphql.schema.model.Transformation
-import com.apurebase.kgraphql.schema.model.TypeDef
-import nidomiro.kdataloader.DataLoader
-import nidomiro.kdataloader.DataLoaderOptions
-import nidomiro.kdataloader.SimpleDataLoaderImpl
-import nidomiro.kdataloader.factories.DataLoaderFactory
-import kotlin.reflect.KClass
-import kotlin.reflect.KProperty1
-import kotlin.reflect.KType
-import kotlin.reflect.KVisibility
-import kotlin.reflect.full.*
+import com.apurebase.kgraphql.schema.model.*
+import kotlin.reflect.*
+import kotlin.reflect.full.isSubclassOf
+import kotlin.reflect.full.isSuperclassOf
+import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.jvmErasure
 
 @Suppress("UNCHECKED_CAST")
-class SchemaCompilation(
-        val configuration : SchemaConfiguration,
+class SchemaCompilation<CONF: SchemaConfiguration>(
+        val configuration : CONF,
         val definition : SchemaDefinition
 ){
 
@@ -54,7 +39,7 @@ class SchemaCompilation(
         INPUT, QUERY
     }
 
-    suspend fun perform(): DefaultSchema {
+    suspend fun perform(): DefaultSchema<CONF> {
         val queryType = handleQueries()
         val mutationType = handleMutations()
         val subscriptionType = handleSubscriptions()

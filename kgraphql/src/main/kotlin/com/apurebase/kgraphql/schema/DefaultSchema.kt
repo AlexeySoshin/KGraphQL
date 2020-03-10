@@ -17,10 +17,10 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.jvm.jvmErasure
 
-class DefaultSchema (
-        internal val configuration: SchemaConfiguration,
-        internal val model : SchemaModel
-) : Schema , __Schema by model, LookupSchema {
+class DefaultSchema<CONF: SchemaConfiguration>(
+    override val configuration: CONF,
+    internal val model : SchemaModel
+) : Schema<CONF> , __Schema by model, LookupSchema {
 
     companion object {
         val OPERATION_NAME_PARAM = NameNode("operationName", null)
